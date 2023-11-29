@@ -12,6 +12,7 @@ function App() {
   //states
   let [word, setWord] = useState("");
   let [steps, setSteps] = useState(0);
+  let [guessed, setGuessed] = useState([]);
 
   //use effect is triggered twice in development, but in prod should trigger once
   useEffect(() => {
@@ -28,11 +29,17 @@ function App() {
       .catch((error) => console.warn(error));
   }, []);
 
+  const handleGuess = (e: any) => {
+    e.preventDefault();
+    let currChar = e.target.dataset.char;
+    console.log(`guessed ${currChar}`);
+  };
+
   return (
     <div className="App">
       <UnfortunateFellow />
       <VeiledWord word={word} steps={steps} />
-      <Keyboard />
+      <Keyboard handleGuess={handleGuess} />
     </div>
   );
 }
