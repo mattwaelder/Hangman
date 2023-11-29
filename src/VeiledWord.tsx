@@ -1,9 +1,16 @@
 import React from "react";
 
-const VeiledWord = () => {
+type VeiledWordProps = {
+  word: string;
+  steps: number;
+};
+
+const VeiledWord = ({ word, steps }: VeiledWordProps) => {
   return (
-    <div>
-      <h2>word goes here</h2>
+    <div className="word-container">
+      {word.split("").map((letter) => {
+        return <div className="word-char">{letter.toUpperCase()}</div>;
+      })}
     </div>
   );
 };

@@ -6,22 +6,32 @@ import UnfortunateFellow from "./UnfortunateFellow";
 import VeiledWord from "./VeiledWord";
 import Keyboard from "./Keyboard";
 import { alphabet } from "./helpers";
+import axios, { AxiosResponse } from "axios";
 
 function App() {
   //states
-  let [word, setWord] = useState("secret");
+  let [word, setWord] = useState("");
+  let [steps, setSteps] = useState(0);
 
+  //use effect is triggered twice in development, but in prod should trigger once
   useEffect(() => {
     //fetch word
     //render spinner
     //as word promise fulfilled, render game
-    console.log(alphabet);
+    axios
+      .get("https://random-word-api.herokuapp.com/word")
+      .then((res) => {
+        console.log(res.data[0], res.data[0].split("").length);
+        setWord(res.data[0]);
+        setSteps(res.data[0].split("").length);
+      })
+      .catch((error) => console.warn(error));
   }, []);
 
   return (
     <div className="App">
       <UnfortunateFellow />
-      <VeiledWord />
+      <VeiledWord word={word} steps={steps} />
       <Keyboard />
     </div>
   );
@@ -45,4 +55,6 @@ if guess counter gets too high, issue game over and ask to play again
 provide option to reset w/ new word
 provide definition of the word?
 rather than hang man, what other image could i draw that makes sense?
+
+if i do plank, the amount of steps to fail will change w/ the word. ill need to get a step variable and make set positions based on that variable on the plank
 */
