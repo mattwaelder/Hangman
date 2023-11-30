@@ -10,9 +10,10 @@ import axios, { AxiosResponse } from "axios";
 
 function App() {
   //states
-  let [word, setWord] = useState("");
-  let [steps, setSteps] = useState(0);
-  let [guessed, setGuessed] = useState([]);
+  let [word, setWord] = useState<string>("");
+  let [steps, setSteps] = useState<number>(0);
+  let [guessed, setGuessed] = useState<string[]>([]);
+  let [gameOver, setGameOver] = useState<boolean>(false);
 
   //use effect is triggered twice in development, but in prod should trigger once
   useEffect(() => {
@@ -31,15 +32,35 @@ function App() {
 
   const handleGuess = (e: any) => {
     e.preventDefault();
-    let currChar = e.target.dataset.char;
+    let currChar: string = e.target.dataset.char;
+    //if already guessed, return
+    if (guessed.includes(currChar)) return;
+    //if game over
+
     console.log(`guessed ${currChar}`);
+
+    //deep copy of guess pool
+    let currGuessPool: string[] = JSON.parse(JSON.stringify(guessed));
+    //update copies
+    currGuessPool.push(currChar);
+
+    if (currGuessPool.length > 8) {
+      console.warn("game over");
+      setGameOver(true);
+      return;
+    }
+
+    //update states
+    setGuessed(currGuessPool);
   };
 
   return (
     <div className="App">
       <UnfortunateFellow />
-      <VeiledWord word={word} steps={steps} />
-      <Keyboard handleGuess={handleGuess} />
+      <VeiledWord word={word} steps={steps} guessed={guessed} />
+      <Keyboard guessed={guessed} handleGuess={handleGuess} />
+      <div className="step-counter">{guessed.length}</div>
+      {gameOver ? <div className="game-over">GAME OVER</div> : ""}
     </div>
   );
 }

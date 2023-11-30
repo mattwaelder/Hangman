@@ -11,7 +11,7 @@ const UnfortunateFellow = () => {
         background: "black",
         position: "absolute",
         left: `${30 + step}vw`,
-        top: "90px",
+        top: "0px",
       }}
     ></div>
   );
@@ -23,7 +23,7 @@ const UnfortunateFellow = () => {
         height: "10px",
         background: "black",
         position: "absolute",
-        top: "200px",
+        top: "10%",
         left: "30vw",
       }}
     ></div>
