@@ -14,40 +14,58 @@ function App() {
   let [steps, setSteps] = useState<number>(0);
   let [guessed, setGuessed] = useState<string[]>([]);
   let [gameOver, setGameOver] = useState<boolean>(false);
+  let [win, setWin] = useState<boolean>(false);
 
-  //use effect is triggered twice in development, but in prod should trigger once
+  //fetch word, update state
   useEffect(() => {
-    //fetch word
-    //render spinner
-    //as word promise fulfilled, render game
     axios
       .get("https://random-word-api.herokuapp.com/word")
       .then((res) => {
         console.log(res.data[0], res.data[0].split("").length);
         setWord(res.data[0]);
-        setSteps(res.data[0].split("").length);
       })
       .catch((error) => console.warn(error));
   }, []);
 
+  //user makes a guess
   const handleGuess = (e: any) => {
     e.preventDefault();
     let currChar: string = e.target.dataset.char;
+    console.log(`guessed ${currChar}`);
+
     //if already guessed, return
     if (guessed.includes(currChar)) return;
-    //if game over
-
-    console.log(`guessed ${currChar}`);
 
     //deep copy of guess pool
     let currGuessPool: string[] = JSON.parse(JSON.stringify(guessed));
-    //update copies
     currGuessPool.push(currChar);
 
-    if (currGuessPool.length > 8) {
-      console.warn("game over");
-      setGameOver(true);
-      return;
+    //if guess is not in word
+    if (!word.split("").includes(currChar)) {
+      let currSteps = steps;
+      currSteps++;
+
+      //if game over (x wrong guesses)
+      if (currSteps > 7) {
+        console.warn("game over");
+        setGameOver(true);
+        return;
+      }
+      setSteps(currSteps);
+    } else {
+      //if the guess is correct
+      //array of correct guesses so far
+      let correctGuesses = currGuessPool.filter((guess, i) =>
+        word.split("").includes(guess)
+      );
+
+      //set of correct characters
+      let correctSet = new Set(word.split(""));
+
+      //if guessed chars match set of correct chars (win)
+      if (correctGuesses.length === correctSet.size) {
+        setWin(true);
+      }
     }
 
     //update states
@@ -57,10 +75,16 @@ function App() {
   return (
     <div className="App">
       <UnfortunateFellow />
-      <VeiledWord word={word} steps={steps} guessed={guessed} />
+      <VeiledWord
+        word={word}
+        steps={steps}
+        guessed={guessed}
+        gameOver={gameOver}
+      />
       <Keyboard guessed={guessed} handleGuess={handleGuess} />
-      <div className="step-counter">{guessed.length}</div>
+      <div className="step-counter">{steps}</div>
       {gameOver ? <div className="game-over">GAME OVER</div> : ""}
+      {win ? <div className="win">WINNER</div> : ""}
     </div>
   );
 }
@@ -85,4 +109,6 @@ provide definition of the word?
 rather than hang man, what other image could i draw that makes sense?
 
 if i do plank, the amount of steps to fail will change w/ the word. ill need to get a step variable and make set positions based on that variable on the plank
+
+maybe set a difficulty option which determines the length of the word?
 */

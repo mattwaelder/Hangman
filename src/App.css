@@ -25,6 +25,22 @@
   align-items: center;
 }
 
+.win {
+  height: 100vh;
+  width: 100vw;
+  color: goldenrod;
+  background: rgba(50, 50, 50, 0.5);
+  font-size: 6em;
+  position: absolute;
+  /* filter: blur(10px); */
+  top: 0;
+  left: 0;
+  /* transform: translate(-400px, -250px); */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .step-counter {
   position: absolute;
   top: 5px;
@@ -41,7 +57,7 @@
 }
 
 .word-char {
-  width: 20px;
+  width: 50px;
   border-bottom: 10px solid black;
 }
 
