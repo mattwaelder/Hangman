@@ -10,11 +10,13 @@ type VeiledWordProps = {
 const VeiledWord = ({ word, steps, guessed, gameOver }: VeiledWordProps) => {
   return (
     <div className="word-container">
-      {word.split("").map((letter) => {
+      {word.split("").map((letter, i) => {
         return guessed.includes(letter) || gameOver ? (
-          <div className="word-char">{letter.toUpperCase()}</div>
+          <div className="word-char" key={i}>
+            {letter.toUpperCase()}
+          </div>
         ) : (
-          <div className="word-char"></div>
+          <div className="word-char" key={i}></div>
         );
       })}
     </div>

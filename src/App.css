@@ -48,6 +48,11 @@
   font-size: 3em;
 }
 
+.image-container {
+  /* position: relative;
+  left: 0; */
+}
+
 .word-container {
   font-size: 60px;
   display: flex;

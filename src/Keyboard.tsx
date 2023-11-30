@@ -11,12 +11,13 @@ const Keyboard = ({ guessed, handleGuess }: KeyboardProps) => {
   return (
     <div className="keyboard-container">
       <div className="keyboard">
-        {alphabet.split("").map((letter) => {
+        {alphabet.split("").map((letter, i) => {
           return (
             <div
               className={`${
                 guessed.includes(letter) ? "disabled" : ""
               } keyboard-key`}
+              key={i}
               data-char={letter}
               onClick={(e) => handleGuess(e)}
             >

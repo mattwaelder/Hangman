@@ -15,6 +15,7 @@ function App() {
   let [guessed, setGuessed] = useState<string[]>([]);
   let [gameOver, setGameOver] = useState<boolean>(false);
   let [win, setWin] = useState<boolean>(false);
+  let [difficulty, setDifficulty] = useState<number>(8);
 
   //fetch word, update state
   useEffect(() => {
@@ -74,7 +75,7 @@ function App() {
 
   return (
     <div className="App">
-      <UnfortunateFellow />
+      <UnfortunateFellow steps={steps} difficulty={difficulty} />
       <VeiledWord
         word={word}
         steps={steps}
@@ -111,4 +112,21 @@ rather than hang man, what other image could i draw that makes sense?
 if i do plank, the amount of steps to fail will change w/ the word. ill need to get a step variable and make set positions based on that variable on the plank
 
 maybe set a difficulty option which determines the length of the word?
+
+
+
+TODO
+add difficulty selection
+make plank walking better-er
+add "reset" button on win/loss screen
+add "word lookup" on win/loss screen
+add title and sassy blurb?
+
+exs:
+~~
+a hangman game without a hanging man,
+with a cracked api,
+will make you feel dumb,
+totally fair and valid words
+~~
 */
