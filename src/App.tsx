@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import logo from "./logo.svg";
+import { FaRedo } from "react-icons/fa";
 import "./App.scss";
 import UnfortunateFellow from "./UnfortunateFellow";
 import VeiledWord from "./VeiledWord";
@@ -17,6 +17,8 @@ function App() {
   let [gameOver, setGameOver] = useState<boolean>(false);
   let [win, setWin] = useState<boolean>(false);
   let [difficulty, setDifficulty] = useState<number>(8);
+  //rather than an async fn to get new word using a state to trigger new word
+  let [reset, setReset] = useState<boolean>(false);
 
   //fetch word, update state
   useEffect(() => {
@@ -27,13 +29,12 @@ function App() {
         setWord(res.data[0]);
       })
       .catch((error) => console.warn(error));
-  }, []);
+  }, [reset]);
 
   //user makes a guess
   const handleGuess = (e: any) => {
     e.preventDefault();
     let currChar: string = e.target.dataset.char;
-    console.log(`guessed ${currChar}`);
 
     //if already guessed, return
     if (guessed.includes(currChar)) return;
@@ -48,7 +49,7 @@ function App() {
       currSteps++;
 
       //if game over (x wrong guesses)
-      if (currSteps > 7) {
+      if (currSteps > difficulty - 1) {
         console.warn("game over");
         setGameOver(true);
         return;
@@ -74,6 +75,24 @@ function App() {
     setGuessed(currGuessPool);
   };
 
+  //reset pressed
+  const handleReset = () => {
+    //reset everything but the difficulty
+    setWin(false);
+    setGameOver(false);
+    setSteps(0);
+    setGuessed([]);
+
+    //this is for useEffect to get new word
+    setReset(!reset);
+  };
+
+  const handleDifficultyChange = (e: any) => {
+    let difficulty: number = parseInt(e.target.value);
+    setDifficulty(difficulty);
+    handleReset();
+  };
+
   return (
     <div className="App">
       <UnfortunateFellow steps={steps} difficulty={difficulty} />
@@ -85,9 +104,19 @@ function App() {
       />
       <Keyboard guessed={guessed} handleGuess={handleGuess} />
       <div className="step-counter">{steps}</div>
-      <DifficultySelect />
+      <DifficultySelect
+        difficulty={difficulty}
+        handleDifficultyChange={handleDifficultyChange}
+      />
       {gameOver ? <div className="game-over">GAME OVER</div> : ""}
       {win ? <div className="win">WINNER</div> : ""}
+      {win || gameOver ? (
+        <button className="redoBtn" onClick={() => handleReset()}>
+          <FaRedo size="25px" />
+        </button>
+      ) : (
+        ""
+      )}
     </div>
   );
 }
