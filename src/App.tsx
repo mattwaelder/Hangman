@@ -5,6 +5,7 @@ import "./App.scss";
 import UnfortunateFellow from "./UnfortunateFellow";
 import VeiledWord from "./VeiledWord";
 import Keyboard from "./Keyboard";
+import DifficultySelect from "./DifficultySelect";
 import { alphabet } from "./helpers";
 import axios, { AxiosResponse } from "axios";
 
@@ -84,6 +85,7 @@ function App() {
       />
       <Keyboard guessed={guessed} handleGuess={handleGuess} />
       <div className="step-counter">{steps}</div>
+      <DifficultySelect />
       {gameOver ? <div className="game-over">GAME OVER</div> : ""}
       {win ? <div className="win">WINNER</div> : ""}
     </div>
