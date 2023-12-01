@@ -1,6 +1,6 @@
 import React from "react";
 import { alphabet } from "./helpers";
-import "./App.css";
+import "./App.scss";
 
 type KeyboardProps = {
   handleGuess: any;

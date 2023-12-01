@@ -24,6 +24,7 @@ const UnfortunateFellow = ({ steps, difficulty }: UnfortunateFellowProps) => {
         color: "black",
         zIndex: "5",
         transform: `translateX(${(steps + 1) * stepLength}px)`,
+        transition: `1s ease-in-out`,
       }}
     >
       <GiPirateHat size={40} />
@@ -42,6 +43,7 @@ const UnfortunateFellow = ({ steps, difficulty }: UnfortunateFellowProps) => {
         borderRadius: "0 0 40px 40px",
         border: "none",
         transform: `translateX(${(steps + 1) * stepLength}px`,
+        transition: `1s ease-in-out`,
       }}
     ></div>
   );
@@ -56,6 +58,7 @@ const UnfortunateFellow = ({ steps, difficulty }: UnfortunateFellowProps) => {
         left: `30vw`,
         top: `50px`,
         transform: `translateX(${(steps + 1) * stepLength}px)`,
+        transition: `1s ease-in-out`,
       }}
     ></div>
   );
@@ -70,8 +73,8 @@ const UnfortunateFellow = ({ steps, difficulty }: UnfortunateFellowProps) => {
         left: `calc(30vw - 20px)`,
         top: `70px`,
         transformOrigin: "bottom right",
-        // transform: `rotate(15deg) translateX(${steps * stepLength}px)`,
         transform: `translateX(${(steps + 1) * stepLength}px) rotate(15deg)`,
+        transition: `1s ease-in-out`,
       }}
     ></div>
   );
@@ -87,6 +90,7 @@ const UnfortunateFellow = ({ steps, difficulty }: UnfortunateFellowProps) => {
         top: `70px`,
         transform: `translateX(${(steps + 1) * stepLength}px) rotate(-15deg)`,
         transformOrigin: "bottom left",
+        transition: `1s ease-in-out`,
       }}
     ></div>
   );
@@ -102,6 +106,7 @@ const UnfortunateFellow = ({ steps, difficulty }: UnfortunateFellowProps) => {
         top: `120px`,
         transform: `translateX(${(steps + 1) * stepLength}px) rotate(210deg)`,
         transformOrigin: "top left",
+        transition: `1s ease-in-out`,
       }}
     ></div>
   );
@@ -117,6 +122,7 @@ const UnfortunateFellow = ({ steps, difficulty }: UnfortunateFellowProps) => {
         top: `120px`,
         transform: `translateX(${(steps + 1) * stepLength}px) rotate(150deg)`,
         transformOrigin: "top right",
+        transition: `1s ease-in-out`,
       }}
     ></div>
   );

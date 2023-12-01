@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import logo from "./logo.svg";
-import "./App.css";
+import "./App.scss";
 import UnfortunateFellow from "./UnfortunateFellow";
 import VeiledWord from "./VeiledWord";
 import Keyboard from "./Keyboard";
@@ -121,6 +121,7 @@ make plank walking better-er
 add "reset" button on win/loss screen
 add "word lookup" on win/loss screen
 add title and sassy blurb?
+add display for how many characters are in word?
 
 exs:
 ~~
