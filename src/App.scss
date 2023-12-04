@@ -189,15 +189,15 @@
   @media (max-width: 800px) {
     bottom: 10px;
     grid-template-columns: repeat(8, auto);
-    grid-template-rows: repeat(auto, auto);
+    grid-template-rows: repeat(4, auto);
   }
 
   @media (max-width: 600px) {
     font-size: 1.5em;
     bottom: 10px;
 
-    grid-template-columns: repeat(8, auto);
-    grid-template-rows: repeat(auto, auto);
+    grid-template-columns: repeat(7, auto);
+    grid-template-rows: repeat(4, auto);
   }
 
   @media (max-width: 380px) {
@@ -205,7 +205,6 @@
     bottom: 10px;
 
     grid-gap: 5px;
-    width: 100vw;
     grid-template-columns: repeat(6, auto);
     grid-template-rows: repeat(5, auto);
   }
