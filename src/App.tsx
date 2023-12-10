@@ -90,6 +90,18 @@ function App() {
     setGuessed(currGuessPool);
   };
 
+  //get dictionary definition
+  const wordLookup = () => {
+    axios
+      .get(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`)
+      .then((res) => {
+        let topDefinition = res.data[0].meanings[0].definitions[0].definition;
+        console.log(res.data[0].meanings[0].definitions[0].definition);
+        alert(topDefinition);
+      })
+      .catch((error) => alert(error.message));
+  };
+
   //reset pressed
   const handleReset = () => {
     //reset everything but the difficulty
@@ -126,9 +138,14 @@ function App() {
       {gameOver ? <div className="game-over">GAME OVER</div> : ""}
       {win ? <div className="win">WINNER</div> : ""}
       {win || gameOver ? (
-        <button className="redoBtn" onClick={() => handleReset()}>
-          <FaRedo size="25px" />
-        </button>
+        <>
+          <button className="redoBtn" onClick={() => handleReset()}>
+            <FaRedo size="25px" />
+          </button>
+          <button className="lookupBtn" onClick={() => wordLookup()}>
+            {word}?
+          </button>
+        </>
       ) : (
         ""
       )}
