@@ -19,16 +19,16 @@ const DifficultySelect = ({
           type="radio"
           id="low"
           name="difficulty"
-          value="12"
-          defaultChecked={difficulty === 12 ? true : false}
+          value="9"
+          defaultChecked={difficulty === 9 ? true : false}
         ></input>
         <label htmlFor="low">Easy</label>
         <input
           type="radio"
           id="medium"
           name="difficulty"
-          value="8"
-          defaultChecked={difficulty === 8 ? true : false}
+          value="7"
+          defaultChecked={difficulty === 7 ? true : false}
         ></input>
         <label htmlFor="medium">Normal</label>
         <input

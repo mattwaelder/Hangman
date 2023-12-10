@@ -16,25 +16,40 @@ function App() {
   let [guessed, setGuessed] = useState<string[]>([]);
   let [gameOver, setGameOver] = useState<boolean>(false);
   let [win, setWin] = useState<boolean>(false);
-  let [difficulty, setDifficulty] = useState<number>(8);
+  let [difficulty, setDifficulty] = useState<number>(7);
   //rather than an async fn to get new word using a state to trigger new word
   let [reset, setReset] = useState<boolean>(false);
 
   //fetch word, update state
   useEffect(() => {
+    // axios
+    //   .get("https://random-word-api.herokuapp.com/word")
+    //   .then((res) => {
+    //     console.log(res.data[0], res.data[0].split("").length);
+    //     setWord(res.data[0]);
+    //   })
+    //   .catch((error) => {
+    //     console.warn(error.message);
+    //   });
+
     axios
-      .get("https://random-word-api.herokuapp.com/word")
+      .get(
+        `https://random-word-api.vercel.app/api?words=1&length=${difficulty}`
+      )
       .then((res) => {
         console.log(res.data[0], res.data[0].split("").length);
         setWord(res.data[0]);
       })
-      .catch((error) => console.warn(error));
-  }, [reset]);
+      .catch((error) => {
+        console.warn(error.message);
+      });
+  }, [reset, difficulty]);
 
   //user makes a guess
   const handleGuess = (e: any) => {
     e.preventDefault();
     let currChar: string = e.target.dataset.char;
+    console.log(currChar, word);
 
     //if already guessed, return
     if (guessed.includes(currChar)) return;
