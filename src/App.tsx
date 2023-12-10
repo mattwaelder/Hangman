@@ -156,41 +156,10 @@ function App() {
 export default App;
 
 /*
-start
-http req for random word (no space, no characters)
-(loading spinner?)
-set random word state
-render default state of hangman visualization
-dynamically render underscores for each character in word
-show full alphabet in caps
-as user clicks letters they visably change
-if letter is in word, render letter (all occurances)
-if letter is NOT in word, ++ guess counter - dynamically updating game image
-if guess counter gets too high, issue game over and ask to play again
-
-provide option to reset w/ new word
-provide definition of the word?
-rather than hang man, what other image could i draw that makes sense?
-
-if i do plank, the amount of steps to fail will change w/ the word. ill need to get a step variable and make set positions based on that variable on the plank
-
-maybe set a difficulty option which determines the length of the word?
-
-
-
 TODO
-add difficulty selection
-make plank walking better-er
-add "reset" button on win/loss screen
-add "word lookup" on win/loss screen
 add title and sassy blurb?
-add display for how many characters are in word?
 
-exs:
-~~
-a hangman game without a hanging man,
-with a cracked api,
-will make you feel dumb,
-totally fair and valid words
-~~
+add spinner for site regen / word lookup
+make word lookup nicer than an alert
+
 */
