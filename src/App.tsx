@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { FaRedo } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
+import { FaShoePrints } from "react-icons/fa6";
 import "./App.scss";
 import UnfortunateFellow from "./UnfortunateFellow";
 import VeiledWord from "./VeiledWord";
@@ -141,7 +142,10 @@ function App() {
         gameOver={gameOver}
       />
       <Keyboard guessed={guessed} handleGuess={handleGuess} />
-      <div className="step-counter">{steps}</div>
+      <div className="step-counter">
+        <FaShoePrints />
+        {steps}
+      </div>
       <DifficultySelect
         difficulty={difficulty}
         handleDifficultyChange={handleDifficultyChange}
@@ -189,6 +193,5 @@ add title and sassy blurb?
 improve visuals of plank?
 update step icon with x/y count or count down to 0 remaining steps
 add spinner for site regen / word lookup
-make word lookup nicer than an alert
 remove invalid words from being chosen (or filter words to only letters in alphabet)
 */
