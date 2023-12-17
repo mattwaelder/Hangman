@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { FaRedo } from "react-icons/fa";
+import { IoMdClose } from "react-icons/io";
 import "./App.scss";
 import UnfortunateFellow from "./UnfortunateFellow";
 import VeiledWord from "./VeiledWord";
@@ -17,6 +18,8 @@ function App() {
   let [gameOver, setGameOver] = useState<boolean>(false);
   let [win, setWin] = useState<boolean>(false);
   let [difficulty, setDifficulty] = useState<number>(7);
+  let [displayLookup, setDisplayLookup] = useState<boolean>(false);
+  let [wordInfo, setWordInfo] = useState<any>("");
   //rather than an async fn to get new word using a state to trigger new word
   let [reset, setReset] = useState<boolean>(false);
 
@@ -49,7 +52,6 @@ function App() {
   const handleGuess = (e: any) => {
     e.preventDefault();
     let currChar: string = e.target.dataset.char;
-    console.log(currChar, word);
 
     //if already guessed, return
     if (guessed.includes(currChar)) return;
@@ -97,7 +99,14 @@ function App() {
       .then((res) => {
         let topDefinition = res.data[0].meanings[0].definitions[0].definition;
         console.log(res.data[0].meanings[0].definitions[0].definition);
-        alert(topDefinition);
+        console.log(res.data[0].meanings);
+        if (topDefinition) {
+          setWordInfo(topDefinition);
+        } else {
+          setWordInfo("OOF");
+        }
+        setDisplayLookup(true);
+        // alert(topDefinition);
       })
       .catch((error) => alert(error.message));
   };
@@ -109,6 +118,8 @@ function App() {
     setGameOver(false);
     setSteps(0);
     setGuessed([]);
+    setDisplayLookup(false);
+    setWordInfo("");
 
     //this is for useEffect to get new word
     setReset(!reset);
@@ -145,6 +156,23 @@ function App() {
           <button className="lookupBtn" onClick={() => wordLookup()}>
             {word}?
           </button>
+          {displayLookup ? (
+            <div className="definitionContainer">
+              <IoMdClose
+                className="lookupCloseBtn"
+                size="30px"
+                onClick={() => setDisplayLookup(false)}
+              />
+              <h2>{word.toUpperCase()}</h2>
+              <ul className="definitionList">
+                <li>
+                  <p>{wordInfo}</p>
+                </li>
+              </ul>
+            </div>
+          ) : (
+            ""
+          )}
         </>
       ) : (
         ""
@@ -158,8 +186,9 @@ export default App;
 /*
 TODO
 add title and sassy blurb?
-
+improve visuals of plank?
+update step icon with x/y count or count down to 0 remaining steps
 add spinner for site regen / word lookup
 make word lookup nicer than an alert
-
+remove invalid words from being chosen (or filter words to only letters in alphabet)
 */
