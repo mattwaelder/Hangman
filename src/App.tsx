@@ -44,10 +44,6 @@ function App() {
     //     console.warn(error.message);
     //   });
 
-    //set hint count based off difficulty at start of round
-    if (difficulty === 5) setHintCount(1);
-    if (difficulty > 5) setHintCount(2);
-
     axios
       .get(
         `https://random-word-api.vercel.app/api?words=1&length=${difficulty}`
@@ -159,8 +155,8 @@ function App() {
       wordLookup();
     }
 
-    //reduce hint count
-    setHintCount(() => hintCount--);
+    //reduce hint count as fn of difficulty
+    setHintCount(() => (difficulty === 5 ? hintCount - 2 : hintCount--));
   };
 
   //reset pressed
