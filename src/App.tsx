@@ -10,6 +10,7 @@ import Keyboard from "./Keyboard";
 import DifficultySelect from "./DifficultySelect";
 import { alphabet } from "./helpers";
 import axios, { AxiosResponse } from "axios";
+import { setSyntheticLeadingComments } from "typescript";
 
 function App() {
   //states
@@ -21,8 +22,15 @@ function App() {
   let [difficulty, setDifficulty] = useState<number>(7);
   let [displayLookup, setDisplayLookup] = useState<boolean>(false);
   let [wordInfo, setWordInfo] = useState<any>("");
+  let [hintCount, setHintCount] = useState<number>(2);
   //rather than an async fn to get new word using a state to trigger new word
   let [reset, setReset] = useState<boolean>(false);
+
+  // let currGuessPool: string[] = JSON.parse(JSON.stringify(guessed));
+  // let correctGuesses = currGuessPool.filter((guess, i) =>
+  //   word.split("").includes(guess)
+  // );
+  // let correctSet = Array.from(new Set(word.split("")));
 
   //fetch word, update state
   useEffect(() => {
@@ -35,6 +43,10 @@ function App() {
     //   .catch((error) => {
     //     console.warn(error.message);
     //   });
+
+    //set hint count based off difficulty at start of round
+    if (difficulty === 5) setHintCount(1);
+    if (difficulty > 5) setHintCount(2);
 
     axios
       .get(
@@ -83,6 +95,11 @@ function App() {
       //set of correct characters
       let correctSet = new Set(word.split(""));
 
+      //near end, disable help
+      if (correctSet.size - correctGuesses.length < 2) {
+        setHintCount(0);
+      }
+
       //if guessed chars match set of correct chars (win)
       if (correctGuesses.length === correctSet.size) {
         setWin(true);
@@ -95,21 +112,55 @@ function App() {
 
   //get dictionary definition
   const wordLookup = () => {
+    console.log("looking up");
     axios
       .get(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`)
       .then((res) => {
-        let topDefinition = res.data[0].meanings[0].definitions[0].definition;
-        console.log(res.data[0].meanings[0].definitions[0].definition);
-        console.log(res.data[0].meanings);
+        let topDefinition =
+          res.data[0].meanings[0].definitions[0].definition || undefined;
+
         if (topDefinition) {
           setWordInfo(topDefinition);
-        } else {
-          setWordInfo("Could not locate definition :(");
         }
-        setDisplayLookup(true);
-        // alert(topDefinition);
       })
-      .catch((error) => console.warn(error.message));
+      .catch((error) => {
+        setWordInfo("Failed to locate definition :(");
+        console.warn(error.message);
+      });
+    setDisplayLookup(true);
+  };
+
+  //user requests a hint
+  const handleHint = (e: any) => {
+    let hintType = e.target.value;
+
+    //pulling this logic from handleGuess (very bad ik)
+    let currGuessPool: string[] = JSON.parse(JSON.stringify(guessed));
+    let correctGuesses = currGuessPool.filter((guess, i) =>
+      word.split("").includes(guess)
+    );
+    let correctSet = new Set(word.split(""));
+    //cant desctructure bc ts is set to compile to es5 >:(
+    let neededChars = Array.from(correctSet).filter(
+      (letter) => !correctGuesses.includes(letter)
+    );
+
+    if (hintType === "show") {
+      let randomIndex = Math.floor(Math.random() * neededChars.length);
+      let revealedChar = neededChars[randomIndex];
+
+      //also pulling this code from handleGuess
+      let currGuessPool: string[] = JSON.parse(JSON.stringify(guessed));
+      currGuessPool.push(revealedChar);
+      setGuessed(currGuessPool);
+    }
+
+    if (hintType === "define") {
+      wordLookup();
+    }
+
+    //reduce hint count
+    setHintCount(() => hintCount--);
   };
 
   //reset pressed
@@ -121,27 +172,30 @@ function App() {
     setGuessed([]);
     setDisplayLookup(false);
     setWordInfo("");
-
     //this is for useEffect to get new word
     setReset(!reset);
   };
 
   const handleDifficultyChange = (e: any) => {
-    let difficulty: number = parseInt(e.target.value);
-    setDifficulty(difficulty);
+    let newDifficulty: number = parseInt(e.target.value);
+    //if hard set hints to 1
+    setDifficulty(newDifficulty);
     handleReset();
   };
 
   return (
     <div className="App">
       <UnfortunateFellow steps={steps} difficulty={difficulty} />
+
       <VeiledWord
         word={word}
         steps={steps}
         guessed={guessed}
         gameOver={gameOver}
       />
+
       <Keyboard guessed={guessed} handleGuess={handleGuess} />
+
       <div className="step-counter">
         <p id="stepTitle">steps remaining</p>
         <div className="stepIconCountWrapper">
@@ -149,12 +203,35 @@ function App() {
           <p id="stepCount">{difficulty - steps}</p>
         </div>
       </div>
+
       <DifficultySelect
         difficulty={difficulty}
         handleDifficultyChange={handleDifficultyChange}
       />
+
+      <div className="hintContainer">
+        <button
+          className="hintBtn"
+          disabled={hintCount > 0 ? false : true}
+          value="show"
+          onClick={(e) => handleHint(e)}
+        >
+          Assist
+        </button>
+        <button
+          className="hintBtn"
+          disabled={hintCount > 0 ? false : true}
+          value="define"
+          onClick={(e) => handleHint(e)}
+        >
+          Define
+        </button>
+      </div>
+
       {gameOver ? <div className="game-over">GAME OVER</div> : ""}
+
       {win ? <div className="win">WINNER</div> : ""}
+
       {win || gameOver ? (
         <>
           <button className="redoBtn" onClick={() => handleReset()}>
@@ -163,7 +240,7 @@ function App() {
           <button className="lookupBtn" onClick={() => wordLookup()}>
             {word}?
           </button>
-          {displayLookup ? (
+          {/* {displayLookup ? (
             <div className="definitionContainer">
               <IoMdClose
                 className="lookupCloseBtn"
@@ -179,8 +256,26 @@ function App() {
             </div>
           ) : (
             ""
-          )}
+          )} */}
         </>
+      ) : (
+        ""
+      )}
+
+      {displayLookup ? (
+        <div className="definitionContainer">
+          <IoMdClose
+            className="lookupCloseBtn"
+            size="30px"
+            onClick={() => setDisplayLookup(false)}
+          />
+          <h2>{win || gameOver ? word.toUpperCase() : ""}</h2>
+          <ul className="definitionList">
+            <li>
+              <p>{wordInfo}</p>
+            </li>
+          </ul>
+        </div>
       ) : (
         ""
       )}
@@ -194,9 +289,10 @@ export default App;
 TODO
 add title and sassy blurb?
 improve visuals of plank?
-update step icon with x/y count or count down to 0 remaining steps
 add spinner for site regen / word lookup
 remove invalid words from being chosen (or filter words to only letters in alphabet)
 change images from png to webp
-on mobile the paper image doesnt touch bottom (height issue i think)
+break up the code into more components, move functions and api calls
+set hit count to change with difficulty
+redo layout with all the new buttons and such (maybe w/ grid? or stick to easy stuff)
 */

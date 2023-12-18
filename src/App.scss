@@ -92,6 +92,31 @@
   cursor: pointer;
 }
 
+.hintContainer {
+  width: auto;
+  height: auto;
+  position: absolute;
+  right: 50vw;
+  top: 20%;
+
+  transform: translateX(250px);
+
+  @media (max-width: 1100px) {
+    transform: none;
+    top: 20%;
+    right: 10px;
+  }
+}
+
+.hintBtn {
+  padding: 8px;
+  margin: 4px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: #cabba1;
+}
+
 .lookupBtn {
   width: auto;
   height: auto;
@@ -115,7 +140,7 @@
 .definitionContainer {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
   padding-bottom: 10px;
   align-items: center;
   width: 50vw;
@@ -130,11 +155,6 @@
   border-radius: 12px;
   z-index: 2;
 
-  h2 {
-    // position: absolute;
-    // top: 5%;
-  }
-
   p {
     margin-left: 30px;
   }
@@ -142,6 +162,7 @@
   @media (max-width: 800px) {
     width: 100vw;
     background-size: 100vw;
+    min-height: 30vh;
     height: fit-content;
   }
 
