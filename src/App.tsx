@@ -104,7 +104,7 @@ function App() {
         if (topDefinition) {
           setWordInfo(topDefinition);
         } else {
-          setWordInfo("OOF");
+          setWordInfo("Could not locate definition :(");
         }
         setDisplayLookup(true);
         // alert(topDefinition);
@@ -143,8 +143,11 @@ function App() {
       />
       <Keyboard guessed={guessed} handleGuess={handleGuess} />
       <div className="step-counter">
-        <FaShoePrints />
-        {steps}
+        <p id="stepTitle">steps remaining</p>
+        <div className="stepIconCountWrapper">
+          <FaShoePrints id="stepIcon" />
+          <p id="stepCount">{difficulty - steps}</p>
+        </div>
       </div>
       <DifficultySelect
         difficulty={difficulty}
@@ -194,4 +197,6 @@ improve visuals of plank?
 update step icon with x/y count or count down to 0 remaining steps
 add spinner for site regen / word lookup
 remove invalid words from being chosen (or filter words to only letters in alphabet)
+change images from png to webp
+on mobile the paper image doesnt touch bottom (height issue i think)
 */

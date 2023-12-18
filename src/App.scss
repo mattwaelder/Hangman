@@ -89,7 +89,6 @@
   border: 3px solid green;
   border-radius: 50%;
   background: oldlace;
-  color: green;
   cursor: pointer;
 }
 
@@ -107,8 +106,8 @@
 
 .lookupCloseBtn {
   position: absolute;
-  right: 10%;
-  top: 10%;
+  right: 5%;
+  top: 5%;
   color: red;
   cursor: pointer;
 }
@@ -116,7 +115,7 @@
 .definitionContainer {
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   width: 50vw;
   height: 30vh;
@@ -130,13 +129,19 @@
   border-radius: 12px;
   z-index: 2;
 
+  h2 {
+    position: absolute;
+    top: 5%;
+  }
+
   p {
     margin-left: 50px;
+    position: absolute;
+    bottom: 30%;
   }
 
   @media (max-width: 800px) {
     width: 100vw;
-    border: 1px solid green;
     background-size: 100vw;
   }
 
@@ -153,6 +158,24 @@
   transform: translateX(250px);
   font-size: 3em;
   color: #cabba1;
+
+  display: flex;
+  flex-direction: column;
+
+  #stepTitle {
+    font-size: 1rem;
+  }
+
+  #stepCount {
+    font-size: 1.5em;
+  }
+
+  .stepIconCountWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+  }
 
   @media (max-width: 1100px) {
     transform: none;
