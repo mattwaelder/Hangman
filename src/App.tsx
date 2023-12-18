@@ -128,7 +128,7 @@ function App() {
 
   //user requests a hint
   const handleHint = (e: any) => {
-    let hintType = e.target.value;
+    let hintType: string = e.target.value;
 
     //pulling this logic from handleGuess (very bad ik)
     let currGuessPool: string[] = JSON.parse(JSON.stringify(guessed));
@@ -156,7 +156,10 @@ function App() {
     }
 
     //reduce hint count as fn of difficulty
-    setHintCount(() => (difficulty === 5 ? hintCount - 2 : hintCount--));
+    let currHintCount = hintCount;
+    difficulty === 5
+      ? setHintCount(currHintCount - 2)
+      : setHintCount(currHintCount - 1);
   };
 
   //reset pressed
@@ -168,6 +171,7 @@ function App() {
     setGuessed([]);
     setDisplayLookup(false);
     setWordInfo("");
+    setHintCount(2);
     //this is for useEffect to get new word
     setReset(!reset);
   };
