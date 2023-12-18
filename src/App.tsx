@@ -109,7 +109,7 @@ function App() {
         setDisplayLookup(true);
         // alert(topDefinition);
       })
-      .catch((error) => alert(error.message));
+      .catch((error) => console.warn(error.message));
   };
 
   //reset pressed
