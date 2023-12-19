@@ -58,9 +58,19 @@ function App() {
   }, [reset, difficulty]);
 
   //user makes a guess
-  const handleGuess = (e: any) => {
-    e.preventDefault();
-    let currChar: string = e.target.dataset.char;
+  //if keybpress, isHint == f, else e becomes a character rather than event
+  const handleGuess = (e: any, isHint = false) => {
+    // e.preventDefault();
+
+    let currChar: string;
+
+    if (isHint) {
+      currChar = e;
+      console.log("hint", e);
+    } else {
+      console.log("not hint", e.target.dataset.char);
+      currChar = e.target.dataset.char;
+    }
 
     //if already guessed, return
     if (guessed.includes(currChar)) return;
@@ -144,11 +154,8 @@ function App() {
     if (hintType === "show") {
       let randomIndex = Math.floor(Math.random() * neededChars.length);
       let revealedChar = neededChars[randomIndex];
-
-      //also pulling this code from handleGuess
-      let currGuessPool: string[] = JSON.parse(JSON.stringify(guessed));
-      currGuessPool.push(revealedChar);
-      setGuessed(currGuessPool);
+      //call guess w/ hint param === true
+      handleGuess(revealedChar, true);
     }
 
     if (hintType === "define") {
@@ -288,11 +295,11 @@ export default App;
 /*
 TODO
 add title and sassy blurb?
+adjust app size to account for mobile browser searchbar
 improve visuals of plank?
 add spinner for site regen / word lookup
 remove invalid words from being chosen (or filter words to only letters in alphabet)
 change images from png to webp
 break up the code into more components, move functions and api calls
-set hit count to change with difficulty
 redo layout with all the new buttons and such (maybe w/ grid? or stick to easy stuff)
 */
