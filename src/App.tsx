@@ -8,7 +8,8 @@ import UnfortunateFellow from "./UnfortunateFellow";
 import VeiledWord from "./VeiledWord";
 import Keyboard from "./Keyboard";
 import DifficultySelect from "./DifficultySelect";
-import { alphabet } from "./helpers";
+import Hints from "./Hints";
+import { randomInt } from "./helpers";
 import axios, { AxiosResponse } from "axios";
 import { setSyntheticLeadingComments } from "typescript";
 
@@ -23,14 +24,10 @@ function App() {
   let [displayLookup, setDisplayLookup] = useState<boolean>(false);
   let [wordInfo, setWordInfo] = useState<any>("");
   let [hintCount, setHintCount] = useState<number>(2);
+  let [disableHints, setDisableHints] = useState<boolean>(false);
+  let [isRandom, setIsRandom] = useState<boolean>(false);
   //rather than an async fn to get new word using a state to trigger new word
   let [reset, setReset] = useState<boolean>(false);
-
-  // let currGuessPool: string[] = JSON.parse(JSON.stringify(guessed));
-  // let correctGuesses = currGuessPool.filter((guess, i) =>
-  //   word.split("").includes(guess)
-  // );
-  // let correctSet = Array.from(new Set(word.split("")));
 
   //fetch word, update state
   useEffect(() => {
@@ -46,7 +43,9 @@ function App() {
 
     axios
       .get(
-        `https://random-word-api.vercel.app/api?words=1&length=${difficulty}`
+        `https://random-word-api.vercel.app/api?words=1&length=${
+          isRandom ? randomInt(3, 9) : difficulty
+        }`
       )
       .then((res) => {
         console.log(res.data[0], res.data[0].split("").length);
@@ -55,7 +54,7 @@ function App() {
       .catch((error) => {
         console.warn(error.message);
       });
-  }, [reset, difficulty]);
+  }, [reset, difficulty, isRandom]);
 
   //user makes a guess
   //if keybpress, isHint == f, else e becomes a character rather than event
@@ -66,9 +65,7 @@ function App() {
 
     if (isHint) {
       currChar = e;
-      console.log("hint", e);
     } else {
-      console.log("not hint", e.target.dataset.char);
       currChar = e.target.dataset.char;
     }
 
@@ -103,7 +100,7 @@ function App() {
 
       //near end, disable help
       if (correctSet.size - correctGuesses.length < 2) {
-        setHintCount(0);
+        setDisableHints(true);
       }
 
       //if guessed chars match set of correct chars (win)
@@ -216,24 +213,13 @@ function App() {
         handleDifficultyChange={handleDifficultyChange}
       />
 
-      <div className="hintContainer">
-        <button
-          className="hintBtn"
-          disabled={hintCount > 0 ? false : true}
-          value="show"
-          onClick={(e) => handleHint(e)}
-        >
-          Assist
-        </button>
-        <button
-          className="hintBtn"
-          disabled={hintCount > 0 ? false : true}
-          value="define"
-          onClick={(e) => handleHint(e)}
-        >
-          Define
-        </button>
-      </div>
+      <Hints
+        hintCount={hintCount}
+        handleHint={handleHint}
+        isRandom={isRandom}
+        setIsRandom={setIsRandom}
+        disableHints={disableHints}
+      />
 
       {gameOver ? <div className="game-over">GAME OVER</div> : ""}
 
@@ -247,23 +233,6 @@ function App() {
           <button className="lookupBtn" onClick={() => wordLookup()}>
             {word}?
           </button>
-          {/* {displayLookup ? (
-            <div className="definitionContainer">
-              <IoMdClose
-                className="lookupCloseBtn"
-                size="30px"
-                onClick={() => setDisplayLookup(false)}
-              />
-              <h2>{word.toUpperCase()}</h2>
-              <ul className="definitionList">
-                <li>
-                  <p>{wordInfo}</p>
-                </li>
-              </ul>
-            </div>
-          ) : (
-            ""
-          )} */}
         </>
       ) : (
         ""

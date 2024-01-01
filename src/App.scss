@@ -98,23 +98,34 @@
   position: absolute;
   right: 50vw;
   top: 20%;
+  display: flex;
+  flex-direction: column;
 
   transform: translateX(250px);
 
   @media (max-width: 1100px) {
     transform: none;
-    top: 20%;
+    top: 15%;
     right: 10px;
   }
 }
 
 .hintBtn {
   padding: 8px;
-  margin: 4px;
+  margin: 0.5em;
   border-radius: 6px;
   border: none;
   cursor: pointer;
   background: #cabba1;
+}
+
+.randomizeBtn {
+  opacity: 0.6;
+}
+
+.toggledOn {
+  opacity: 1;
+  background: rgba(30, 120, 30, 1);
 }
 
 .lookupBtn {
