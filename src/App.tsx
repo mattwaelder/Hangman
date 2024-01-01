@@ -268,7 +268,6 @@ adjust app size to account for mobile browser searchbar
 improve visuals of plank?
 add spinner for site regen / word lookup
 remove invalid words from being chosen (or filter words to only letters in alphabet)
-change images from png to webp
 break up the code into more components, move functions and api calls
 redo layout with all the new buttons and such (maybe w/ grid? or stick to easy stuff)
 */
