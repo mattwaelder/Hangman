@@ -21,7 +21,7 @@ const Hints = ({
         defaultChecked={isRandom ? true : false}
         onClick={() => setIsRandom(!isRandom)}
       >
-        Randomize
+        Random Length
       </button>
       <button
         className="hintBtn"
