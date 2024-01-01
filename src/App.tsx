@@ -48,7 +48,7 @@ function App() {
         }`
       )
       .then((res) => {
-        console.log(res.data[0], res.data[0].split("").length);
+        // console.log(res.data[0], res.data[0].split("").length);
         setWord(res.data[0]);
       })
       .catch((error) => {

@@ -29,7 +29,7 @@ const Hints = ({
         value="show"
         onClick={(e) => handleHint(e)}
       >
-        Reaveal
+        Reveal Char
       </button>
       <button
         className="hintBtn"
