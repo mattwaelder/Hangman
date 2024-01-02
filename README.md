@@ -3,7 +3,7 @@ A game of hangman, sans gallows.
 
 * Live site available at: https://walktheplank.netlify.app
 
-<img width="709" alt="walktheplank" src="https://github.com/mattwaelder/hangman/assets/74801942/e7640a78-d7c2-44f1-8520-725b775762b1">
+<img width="400" alt="walktheplank" src="https://github.com/mattwaelder/hangman/assets/74801942/e7640a78-d7c2-44f1-8520-725b775762b1">
 
 ## About
 
