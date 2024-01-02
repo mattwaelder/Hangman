@@ -176,6 +176,7 @@ function App() {
     setDisplayLookup(false);
     setWordInfo("");
     setHintCount(2);
+    setDisableHints(false);
     //this is for useEffect to get new word
     setReset(!reset);
   };
